@@ -1,10 +1,7 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,9 +21,7 @@ public class Main {
             FileReader fileReader = new FileReader(filePath);
             Object objContent = jsonParser.parse(fileReader);
             JSONObject content = new JSONObject(objContent.toString());
-//            String content = new String(Files.readAllBytes(Paths.get(filePath)));
             JSONArray jsonArray = new JSONArray(content.getJSONArray("clubs"));
-//            System.out.println(jsonArray);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -65,6 +60,9 @@ public class Main {
                 System.out.println("Name: " + team.getName());
                 System.out.println("Code: " + team.getCode());
                 System.out.println("Country: " + team.getCountry());
+
+                System.out.println("Hexadecimal: " + team.convertToHex());
+
                 System.out.println();
                 found = true;
                 break;
