@@ -33,14 +33,4 @@ public class FootballTeam {
         this.code = code;
         this.country = country;
     }
-    public String convertToHex() {
-        if (code != null && code.length() % 2 == 1) {
-            int middleIndex = code.length() / 2;
-            char middleChar = code.charAt(middleIndex);
-            int middleValue = (int) middleChar;
-            return Integer.toHexString(middleValue);
-        }
-        return "";
-    }
-
 }

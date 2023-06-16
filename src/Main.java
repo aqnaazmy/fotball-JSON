@@ -7,18 +7,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static List<FootballTeam> footballTeams = new ArrayList<>();
+    private static final List<FootballTeam> footballTeams = new ArrayList<>();
 
     public static void main(String[] args) {
-        readJSONFile("src/brazil.json");
+        readJSONFile();
         displayData();
         searchClub();
+        convertNameToHex(); // Mengkonversi nilai name menjadi bilangan heksadesimal jika code memiliki nilai tengah 'n'
     }
 
-    private static void readJSONFile(String filePath) {
+    private static void readJSONFile() {
         JSONParser jsonParser = new JSONParser();
         try {
-            FileReader fileReader = new FileReader(filePath);
+            FileReader fileReader = new FileReader("src/brazil.json");
             Object objContent = jsonParser.parse(fileReader);
             JSONObject content = new JSONObject(objContent.toString());
             JSONArray jsonArray = new JSONArray(content.getJSONArray("clubs"));
@@ -43,6 +44,7 @@ public class Main {
             System.out.println("Name: " + team.getName());
             System.out.println("Code: " + team.getCode());
             System.out.println("Country: " + team.getCountry());
+
             System.out.println();
         }
     }
@@ -60,9 +62,6 @@ public class Main {
                 System.out.println("Name: " + team.getName());
                 System.out.println("Code: " + team.getCode());
                 System.out.println("Country: " + team.getCountry());
-
-                System.out.println("Hexadecimal: " + team.convertToHex());
-
                 System.out.println();
                 found = true;
                 break;
@@ -70,9 +69,31 @@ public class Main {
         }
 
         if (!found) {
-            System.out.println("Club not found  .");
+            System.out.println("Club not found.");
         }
 
         scanner.close();
+    }
+
+    private static void convertNameToHex() {
+        System.out.println("Nama dalam bentuk hexa '" + 'N' + "'):");
+        for (FootballTeam team : footballTeams) {
+            String code = team.getCode();
+            if (code != null && code.length() >= 3 && code.charAt(1) == 'N') {
+                String name = team.getName();
+                String hex = convertToHex(name);
+                System.out.println("Name: " + name);
+                System.out.println("Hex: " + hex);
+                System.out.println();
+            }
+        }
+    }
+
+    private static String convertToHex(String name) {
+        StringBuilder hexBuilder = new StringBuilder();
+        for (char c : name.toCharArray()) {
+            hexBuilder.append(Integer.toHexString(c));
+        }
+        return hexBuilder.toString();
     }
 }
